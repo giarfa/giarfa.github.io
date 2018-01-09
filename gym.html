@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+    <style>
+    
+        .w-1 {
+            width: 0.0001%;
+        }
+        .w-33 {
+            width: 33%;
+        }
+        .w-66 {
+            width: 66%;
+        }
+        html {
+            font-size: 1.1rem;
+        }
+        .text-lg {
+            font-size: 1.2rem;
+        }
+
+    </style>
+
+    <title>GYM!</title>
+  </head>
+  <body>
+    <div class="container">
+        <div class="container list-container my-1">
+            <div class="row row-template border border-dark border-top-0 pb-2">
+                <div class="col">
+                    <div class="row">
+                        <div class="col text-lg text-descr">--descr--</div>
+                        <div class="w-100"></div>
+                        <div class="col text-repetitions">--rep--</div>
+                        <div class="col text-weight">--weight--</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row h-100 align-items-center">
+                        <div class="col"><button type="button" class="btn btn-primary btn-lg btn-block">+</button></div>
+                        <div class="col"><button type="button" class="btn btn-secondary btn-lg btn-block">-</button></div>
+                    </div>
+                </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <div class="progress">
+                        <div class="progress-bar w-1" role="progressbar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <script>
+    
+        var db = [
+            {"descr": "LAT MACHINE (DIETRO)", "repetitions": "3x15", "weight": "25kg"},
+            {"descr": "CHEST PRESS (LARGA)", "repetitions": "3x15", "weight": "25kg"},
+            {"descr": "LEG PRESS 45°", "repetitions": "3x15", "weight": "25kg"},
+            {"descr": "ERCOLINA ALTA (ASTA)", "repetitions": "3x12", "weight": "25kg"},
+            {"descr": "LEG EXTENSION", "repetitions": "3x12", "weight": "25kg"},
+            {"descr": "ALTERNATO MAN.", "repetitions": "3x12", "weight": "25kg"},
+            {"descr": "ABDUCTOR MACHINE", "repetitions": "3x15", "weight": "25kg"},
+            {"descr": "VERTICAL ROW", "repetitions": "3x15", "weight": "25kg"},
+            {"descr": "ADDOMINALI FLEX 30°", "repetitions": "3x15", "weight": ""},
+            {"descr": "ADDOMINALI ROTAX", "repetitions": "3x15", "weight": ""},
+            {"descr": "ADDOMINALI FLEX INV.", "repetitions": "3x15", "weight": ""}
+        ];
+
+        $().ready(function(){
+
+            var clone = $('.row-template');
+            clone.remove(); 
+
+            db.forEach(function(item, index){
+                item.completion = 0;
+                clone = clone.clone();
+                clone.find('.text-descr').text(item.descr);
+                clone.find('.text-repetitions').text(item.repetitions);
+                clone.find('.text-weight').text(item.weight);
+                clone.find('.btn-primary').click(function(){ addProgress(index); })
+                clone.find('.btn-secondary').click(function(){ removeProgress(index); })
+                $('.list-container').append(clone);
+            });
+
+            $('.border-top-0').eq(0).removeClass('border-top-0');
+        });
+
+        function addProgress(index) {
+            var $progressBar = $('.row-template').eq(index).find('.progress-bar');
+            switch (db[index].completion) {
+                case 0:
+                    $progressBar.addClass('w-33');
+                    break;
+                case 1:
+                    $progressBar.addClass('w-66');
+                    break;
+                case 2:
+                    $progressBar.addClass('w-100');
+                    break;
+            }
+            if (db[index].completion < 3)
+                db[index].completion++;
+        }
+
+        function removeProgress(index) {
+            var $progressBar = $('.row-template').eq(index).find('.progress-bar');
+            switch (db[index].completion) {
+                case 1:
+                    $progressBar.removeClass('w-33');
+                    break;
+                case 2:
+                    $progressBar.removeClass('w-66');
+                    break;
+                case 3:
+                    $progressBar.removeClass('w-100');
+                    break;
+            }
+            if (db[index].completion > 0)
+                db[index].completion--;
+        }
+    
+    </script>
+  </body>
+</html>
